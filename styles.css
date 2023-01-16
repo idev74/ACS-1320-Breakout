@@ -3,7 +3,7 @@
     margin: 0;
   }
   canvas {
-    background: #eee;
+    background: rgb(180, 158, 241);
     display: block;
     margin: 0 auto;
   }
