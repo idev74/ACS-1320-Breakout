@@ -29,50 +29,57 @@ for (let c = 0; c < brickColumnCount; c += 1) {
   }
 }
 
-function keyDownHandler(e) {
-  if (e.key === 'Right' || e.key === 'ArrowRight') {
+function replay() {
+  document.location.reload();
+}
+
+function keyDownHandler({ key }) {
+  if (key === 'Right' || key === 'ArrowRight') {
     rightPressed = true;
-  } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+  } else if (key === 'Left' || key === 'ArrowLeft') {
     leftPressed = true;
   }
 }
 
-function keyUpHandler(e) {
-  if (e.key === 'Right' || e.key === 'ArrowRight') {
+function keyUpHandler({ key }) {
+  if (key === 'Right' || key === 'ArrowRight') {
     rightPressed = false;
-  } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+  } else if (key === 'Left' || key === 'ArrowLeft') {
     leftPressed = false;
   }
 }
 
-function mouseMoveHandler(e) {
-  const relativeX = e.clientX - canvas.offsetLeft;
+function mouseMoveHandler({ clientX }) {
+  const relativeX = clientX - canvas.offsetLeft;
   if (relativeX > 0 && relativeX < canvas.width) {
     paddleX = relativeX - paddleWidth / 2;
   }
 }
 
-document.addEventListener('keydown', keyDownHandler, false);
-document.addEventListener('keyup', keyUpHandler, false);
-document.addEventListener('mousemove', mouseMoveHandler, false);
+const listener = document.addEventListener;
+
+listener('keydown', keyDownHandler, false);
+listener('keyup', keyUpHandler, false);
+listener('mousemove', mouseMoveHandler, false);
 
 function collisionDetection() {
   for (let c = 0; c < brickColumnCount; c += 1) {
     for (let r = 0; r < brickRowCount; r += 1) {
       const b = bricks[c][r];
-      if (b.status === 1) {
+      const { x: brickX, y: brickY, status } = b;
+      if (status === 1) {
         if (
-          x > b.x
-          && x < b.x + brickWidth
-          && y > b.y
-          && y < b.y + brickHeight
+          x > brickX
+          && x < x + brickWidth
+          && y > brickY
+          && y < brickY + brickHeight
         ) {
           dy = -dy;
           b.status = 0;
           score += 1;
           if (score === brickRowCount * brickColumnCount) {
             alert('YOU WIN, CONGRATULATIONS!');
-            document.location.reload();
+            replay();
           }
         }
       }
@@ -146,7 +153,7 @@ function draw() {
       lives -= 1;
       if (!lives) {
         alert('GAME OVER');
-        document.location.reload();
+        replay();
       } else {
         x = canvas.width / 2;
         y = canvas.height - 30;
