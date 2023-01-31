@@ -1,7 +1,7 @@
 /* eslint-disable no-alert */
 import Ball from './Ball';
 import Paddle from './Paddle';
-import Bricks from './Bricks';
+// import Bricks from './Bricks';
 
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
