@@ -1,8 +1,10 @@
-import Sprite from './Sprite';
-
-class Paddle extends Sprite {
-  constructor(x = 0, y = 0, width = 100, height = 10, color = '#f00') {
-    super(x, y, width, height, color);
+class Sprite {
+  constructor(x = 0, y = 0, width = 100, height = 100, color = '#f00') {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.color = color;
   }
 
   moveTo(x, y) {
@@ -24,4 +26,4 @@ class Paddle extends Sprite {
   }
 }
 
-export default Paddle;
+export default Sprite;

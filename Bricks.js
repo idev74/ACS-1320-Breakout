@@ -15,7 +15,7 @@ class Bricks {
       for (let r = 0; r < this.brickRowCount; r += 1) {
         const x = c * (this.brickWidth + this.brickPadding) + this.brickOffsetLeft;
         const y = r * (this.brickHeight + this.brickPadding) + this.brickOffsetTop;
-        this.bricks[c][r] = { x, y, status: 1 }; // new brick
+        this.bricks[c][r] = { x, y, status: 1 };
       }
     }
   }
@@ -30,35 +30,6 @@ class Bricks {
           ctx.fillStyle = '#0095DD';
           ctx.fill();
           ctx.closePath();
-        }
-      }
-    }
-  }
-
-  replay() {
-    document.location.reload();
-  }
-
-  collisionDetection() {
-    for (let c = 0; c < this.brickColumnCount; c += 1) {
-      for (let r = 0; r < this.brickRowCount; r += 1) {
-        const b = bricks[c][r];
-        const { x: brickX, y: brickY, status } = b;
-        if (status === 1) {
-          if (
-            x > brickX
-            && x < x + brickWidth
-            && y > brickY
-            && y < brickY + brickHeight
-          ) {
-            dy = -dy;
-            b.status = 0;
-            this.score += 1;
-            if (this.score === this.brickRowCount * this.brickColumnCount) {
-              alert('YOU WIN, CONGRATULATIONS!');
-              replay();
-            }
-          }
         }
       }
     }
