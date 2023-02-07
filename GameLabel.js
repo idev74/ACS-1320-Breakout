@@ -1,6 +1,6 @@
 import Sprite from "./Sprite";
 
-class GameLabel extends Sprite{
+class GameLabel extends Sprite {
     constructor(text, x, y, color, font = '16px Arial') {
         super(x, y, 0, 0, color)
         this.text = text;

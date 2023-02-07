@@ -1,7 +1,7 @@
-import Ball from './ball';
-import Bricks from './Bricks';
-import Paddle from './paddle';
-import GameLabel from './GameLabel';
+import Ball from './Ball.js';
+import Bricks from './Bricks.js';
+import Paddle from './Paddle.js';
+import GameLabel from './GameLabel.js';
 
 // *********************************************************
 // Canvas Setup
@@ -18,12 +18,12 @@ class Game {
         this.ctx = ctx;
         this.color = '#301934'
         this.paddleWidth = 75;
-        this.paddleX = (canvas.width - paddleWidth) / 2;
+        this.paddleX = (this.canvas.width - this.paddleWidth) / 2;
 
         // instantiation
-        this.ball = new Ball(0, 0, 2, -2, ballRadius, objectColor);
+        this.ball = new Ball(this.ball.x, this.ball.y, this.ball.radius, this.ball.color);
         this.paddle = new Paddle(paddleXStart, paddleYStart, paddleWidth, paddleHeight, objectColor);
-        this.bricks = new Bricks(brickColumnCount, brickRowCount);
+        this.bricks = new Bricks(this.bricks.rows, this.bricks.columns);
         this.scoreLabel = new GameLabel('Score: ', 8, 20, this.color);
         this.livesLabel = new GameLabel('Lives: ', this.canvas.width - 65, 20);
 
@@ -35,7 +35,7 @@ class Game {
         this.resetItems();
     }
 
-    //
+    // methods
     eventListeners() {
         listener('keydown', this.keyDownHandler.bind(this), false);
         listener('keyup', this.keyUpHandler.bind(this), false);
@@ -50,7 +50,7 @@ class Game {
         if (this.rightPressed && this.paddle.x < this.canvas.width - this.paddle.width) {
             this.paddle.moveTo(7);
         }
-        else if (leftPressed && this.paddle.x > 0) {
+        else if (this.leftPressed && this.paddle.x > 0) {
             this.paddle.moveTo(-7);
         }
     }
@@ -101,7 +101,7 @@ class Game {
                         this.ball.dy = -this.ball.dy;
                         b.status = 0;
                         this.scoreLabel.value += 1;
-                        if (score === brickRowCount * brickColumnCount) {
+                        if (this.scoreLabel.value === this.bricks.rows * this.bricks.columns) {
                             alert('YOU WIN, CONGRATULATIONS!');
                             restart();
                         }
@@ -115,7 +115,7 @@ class Game {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.bricks.render(this.ctx)
         this.ball.render(this.ctx)
-        this.ball.moveTo();
+        this.ball.move();
         this.paddle.render(this.ctx)
         this.scoreLabel.render(this.ctx)
         this.livesLabel.render(this.ctx)
@@ -132,7 +132,7 @@ class Game {
                 this.ball.dy = -this.ball.dy;
             } else {
                 this.livesLabel.value -= 1;
-                if (!livesLabel.value) {
+                if (!this.livesLabel.value) {
                     alert('GAME OVER');
                     restart();
                 } else {
