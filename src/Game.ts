@@ -1,19 +1,34 @@
-import Ball from './Ball.js';
-import Bricks from './Bricks.js';
-import Paddle from './Paddle.js';
-import GameLabel from './GameLabel.js';
+import Ball from './Ball';
+import Bricks from './Bricks';
+import Paddle from './Paddle';
+import GameLabel from './GameLabel';
 
 // *********************************************************
 // Canvas Setup
 // *********************************************************
-const canvas = document.getElementById('myCanvas');
-const ctx = canvas.getContext('2d');
+const canvas = <HTMLCanvasElement> document.getElementById('myCanvas');
+const ctx: any = canvas.getContext('2d');
 const x = canvas.width / 2;
 const y = canvas.height - 30;
 const listener = document.addEventListener
 
 class Game {
-    constructor(canvas, ctx) {
+    canvas: any;
+    ctx: any;
+    x: number;
+    y: number;
+    paddleWidth: number;
+    paddleX: number;
+    ball: Ball;
+    paddle: Paddle;
+    bricks: Bricks;
+    scoreLabel: GameLabel;
+    livesLabel: GameLabel;
+    rightPressed: Boolean;
+    leftPressed: Boolean;
+    color: string;
+
+    constructor(canvas: any, ctx: any) {
         this.canvas = canvas;
         this.ctx = ctx;
         this.color = '#301934'
@@ -22,10 +37,10 @@ class Game {
 
         // instantiation
         this.ball = new Ball(this.ball.x, this.ball.y, this.ball.radius, this.ball.color);
-        this.paddle = new Paddle(paddleXStart, paddleYStart, paddleWidth, paddleHeight, objectColor);
-        this.bricks = new Bricks(this.bricks.rows, this.bricks.columns);
+        this.paddle = new Paddle(this.paddle.x, this.paddle.y, this.paddle.width, this.paddle.height, this.paddle.color);
+        this.bricks = new Bricks(this.bricks.rows, this.bricks.columns, this.color);
         this.scoreLabel = new GameLabel('Score: ', 8, 20, this.color);
-        this.livesLabel = new GameLabel('Lives: ', this.canvas.width - 65, 20);
+        this.livesLabel = new GameLabel('Lives: ', this.canvas.width - 65, 20, this.color);
 
         this.rightPressed = false;
         this.leftPressed = false;
@@ -55,7 +70,7 @@ class Game {
         }
     }
 
-    keyDownHandler({ key }) {
+    keyDownHandler({ key }: any) {
         if (key === 'Right' || key === 'ArrowRight') {
             this.rightPressed = true;
         } else if (key === 'Left' || key === 'ArrowLeft') {
@@ -63,7 +78,7 @@ class Game {
         }
     }
 
-    keyUpHandler({ key }) {
+    keyUpHandler({ key }: any) {
         if (key === 'Right' || key === 'ArrowRight') {
             this.rightPressed = false;
         } else if (key === 'Left' || key === 'ArrowLeft') {
@@ -71,7 +86,7 @@ class Game {
         }
     }
 
-    mouseMoveHandler({ clientX }) {
+    mouseMoveHandler({ clientX }: any) {
         const relativeX = clientX - this.canvas.offsetLeft;
         if (relativeX > 0 && relativeX < this.canvas.width) {
             this.paddle.moveBy(relativeX - this.paddle.width / 2);
@@ -90,7 +105,6 @@ class Game {
         for (let c = 0; c < this.bricks.columns; c += 1) {
             for (let r = 0; r < this.bricks.rows; r += 1) {
                 const b = this.bricks.bricks[c][r];
-                // const { x: brickX, y: brickY } = b;
                 if (b.status === 1) {
                     if (
                         this.ball.x > b.x
@@ -103,7 +117,7 @@ class Game {
                         this.scoreLabel.value += 1;
                         if (this.scoreLabel.value === this.bricks.rows * this.bricks.columns) {
                             alert('YOU WIN, CONGRATULATIONS!');
-                            restart();
+                            this.restart();
                         }
                     }
                 }
@@ -134,7 +148,7 @@ class Game {
                 this.livesLabel.value -= 1;
                 if (!this.livesLabel.value) {
                     alert('GAME OVER');
-                    restart();
+                    this.restart();
                 } else {
                     this.resetItems();
                 }
