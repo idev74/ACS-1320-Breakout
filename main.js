@@ -1,4 +1,4 @@
-import Game from './main.js';
+import Game from 'main.js';
 
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
